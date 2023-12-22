@@ -1,6 +1,6 @@
 using System.Net.Http.Headers;
-using WebApp.Configuration;
-using WebApp.Services;
+using WebApi.Configuration;
+using WebApi.Services;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);

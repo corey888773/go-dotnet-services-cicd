@@ -1,8 +1,8 @@
 using System.Text;
 using System.Text.Json;
-using WebApp.DataStructures.GolangService;
+using WebApi.DataStructures.GolangService;
 
-namespace WebApp.Services;
+namespace WebApi.Services;
 
 public class GolangService
 {

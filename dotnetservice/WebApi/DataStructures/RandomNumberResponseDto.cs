@@ -1,4 +1,4 @@
-namespace WebApp.DataStructures;
+namespace WebApi.DataStructures;
 
 public class RandomNumberResponseDto
 {

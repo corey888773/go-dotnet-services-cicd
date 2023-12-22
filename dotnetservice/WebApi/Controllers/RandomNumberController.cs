@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApp.DataStructures.GolangService;
-using WebApp.Services;
+using WebApi.DataStructures.GolangService;
+using WebApi.Services;
 
-namespace WebApp.Controllers;
+namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

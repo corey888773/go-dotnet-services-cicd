@@ -1,4 +1,4 @@
-namespace WebApp.Configuration
+namespace WebApi.Configuration
 {
     public class GolangServiceConfig
     {

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WebApp.DataStructures.GolangService;
+namespace WebApi.DataStructures.GolangService;
 public class GetRandomNumberRequestDto
 {
     [JsonPropertyName("min")]
