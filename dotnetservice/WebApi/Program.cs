@@ -1,8 +1,8 @@
 using System.Net.Http.Headers;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Configuration;
 using WebApi.Services;
 using Microsoft.Extensions.Options;
-using WebApi;
 using WebApi.Data;
 using WebApi.Models;
 
@@ -42,4 +42,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Run migrations
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ElympicsDbContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
+
 app.Run();
+
+public partial class Program {}
