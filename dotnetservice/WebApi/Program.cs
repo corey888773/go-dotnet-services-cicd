@@ -2,6 +2,9 @@ using System.Net.Http.Headers;
 using WebApi.Configuration;
 using WebApi.Services;
 using Microsoft.Extensions.Options;
+using WebApi;
+using WebApi.Data;
+using WebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<GolangServiceConfig>(builder.Configuration.GetSection(nameof(GolangServiceConfig)));
+builder.Services.AddDbContext<ElympicsDbContext>();
+builder.Services.AddScoped<IRepository<RandomNumberRecord>, BasicNumbersRepository>();
 
 builder.Services.AddHttpClient<GolangService>((serviceProvider, client) =>
 {

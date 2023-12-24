@@ -15,7 +15,7 @@ public class GolangService
         _uri = _client.BaseAddress ?? throw new Exception(nameof(client.BaseAddress));
     }
 
-    public async Task<string> GetRandomNumber(GetRandomNumberRequestDto requestDto)
+    public async Task<GetRandomNumberResponseDto> GetRandomNumber(GetRandomNumberRequestDto requestDto)
     {
         var httpRequest = new HttpRequestMessage()
         {
@@ -28,6 +28,13 @@ public class GolangService
         response.EnsureSuccessStatusCode();
         
         var content = await response.Content.ReadAsStringAsync();
-        return content;
+        var responseDto = JsonSerializer.Deserialize<GetRandomNumberResponseDto>(content);
+        
+        if (responseDto == null)
+        {
+            throw new Exception("Response is null");
+        }
+        
+        return responseDto;
     }
 }
