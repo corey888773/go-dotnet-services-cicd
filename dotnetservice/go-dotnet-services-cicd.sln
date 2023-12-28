@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{3E8D2DEC-AD6A-4680-9656-6540D0FF4A75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.IntegrationTests", "WebApi.IntegrationTests\WebApi.IntegrationTests.csproj", "{1C7194BD-C16B-4971-AEA3-2576DF3E5E63}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{A71BD240-C3C0-4339-9852-D44E817E0E62}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{534AA965-8276-4289-821F-1D3B5A35D023}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E8D2DEC-AD6A-4680-9656-6540D0FF4A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E8D2DEC-AD6A-4680-9656-6540D0FF4A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E8D2DEC-AD6A-4680-9656-6540D0FF4A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E8D2DEC-AD6A-4680-9656-6540D0FF4A75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C7194BD-C16B-4971-AEA3-2576DF3E5E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C7194BD-C16B-4971-AEA3-2576DF3E5E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C7194BD-C16B-4971-AEA3-2576DF3E5E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C7194BD-C16B-4971-AEA3-2576DF3E5E63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6E9CF92-FEE7-4E89-A7B4-982BC0EFFF3D}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E8D2DEC-AD6A-4680-9656-6540D0FF4A75} = {A71BD240-C3C0-4339-9852-D44E817E0E62}
+		{1C7194BD-C16B-4971-AEA3-2576DF3E5E63} = {534AA965-8276-4289-821F-1D3B5A35D023}
+	EndGlobalSection
+EndGlobal
