@@ -3,14 +3,14 @@ using WebApi.Models;
 
 namespace WebApi.Data;
 
-public interface IRepository<RandomNumberRecord>
+public interface INumbersRepository
 {
     Task<RandomNumberRecord> GetByIdAsync(Guid id);
     Task<List<RandomNumberRecord>> ListAsync(int skip=0, int take=0);
     Task<RandomNumberRecord> AddAsync(RandomNumberRecord randomNumberRecord);
 }
 
-public class BasicNumbersRepository : IRepository<RandomNumberRecord>
+public class BasicNumbersRepository : INumbersRepository
 {
     private readonly ElympicsDbContext _dbContext;
     
@@ -21,7 +21,7 @@ public class BasicNumbersRepository : IRepository<RandomNumberRecord>
     
     public async Task<RandomNumberRecord> GetByIdAsync(Guid id)
     {
-        var record = await _dbContext.Set<RandomNumberRecord>().FindAsync(id);
+        var record = await _dbContext.RandomNumberRecords.FindAsync(id);
         
         if (record == null)
         {
@@ -32,13 +32,13 @@ public class BasicNumbersRepository : IRepository<RandomNumberRecord>
 
     public async Task<List<RandomNumberRecord>> ListAsync(int skip = 0, int take = 0)
     {
-       var records = await _dbContext.Set<RandomNumberRecord>().Skip(skip).Take(take).ToListAsync();
+       var records = await _dbContext.RandomNumberRecords.Skip(skip).Take(take).ToListAsync();
        return records;
     }
 
     public async Task<RandomNumberRecord> AddAsync(RandomNumberRecord randomNumberRecord)
     {
-        var record = await _dbContext.Set<RandomNumberRecord>().AddAsync(randomNumberRecord);
+        var record = await _dbContext.RandomNumberRecords.AddAsync(randomNumberRecord);
         await _dbContext.SaveChangesAsync();
         return record.Entity;
     }

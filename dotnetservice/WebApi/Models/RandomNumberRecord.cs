@@ -1,8 +1,19 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace WebApi.Models;
 
-public class RandomNumberRecord
+public record RandomNumberRecord
 {
-    public Guid Id { get; set; }
-    public int Number { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public static RandomNumberRecord Create(int number)
+    {
+        return new RandomNumberRecord
+        {
+            Id = Guid.NewGuid(),
+            Number = number,
+            CreatedAt = DateTime.UtcNow
+        };
+    }
+    public Guid Id { get; init; }
+    public int Number { get; init; }
+    public DateTime CreatedAt { get; init; }
 }

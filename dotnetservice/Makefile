@@ -3,7 +3,7 @@ DB_URL=postgresql://root:secret@localhost:5432/elympics?sslmode=disable
 .PHONY: postgres createdb dropdb psql dbstart
 
 postgres:
-	docker run --rm --name elympics-postgres -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=elympics -d postgres:15.4-alpine --network elympics
+	docker run --rm --name elympics-postgres -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=elympics -d postgres:latest --network elympics
 	
 dbstart:
 	docker start elympics-postgres

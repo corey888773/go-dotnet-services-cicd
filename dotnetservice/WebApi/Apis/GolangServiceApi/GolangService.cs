@@ -1,10 +1,10 @@
 using System.Text;
 using System.Text.Json;
-using WebApi.DataStructures.GolangService;
+using WebApi.Apis.GolangServiceApi;
 
 namespace WebApi.Services;
 
-public class GolangService
+public class GolangService : IGolangService
 {
     private readonly HttpClient _client;
     private readonly Uri _uri;

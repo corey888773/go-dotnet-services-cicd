@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WebApi.DataStructures.GolangService;
+namespace WebApi.Apis.GolangServiceApi;
 
 public class GetRandomNumberResponseDto
 {

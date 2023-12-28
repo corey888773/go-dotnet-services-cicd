@@ -1,6 +1,13 @@
+using System.Data;
+using System.Net;
+using System.Text.Json;
+using LanguageExt.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using WebApi.Apis.GolangServiceApi;
+using WebApi.Configuration;
 using WebApi.Data;
-using WebApi.DataStructures.GolangService;
+using WebApi.DataStructures;
 using WebApi.Models;
 using WebApi.Services;
 
@@ -11,18 +18,29 @@ namespace WebApi.Controllers;
 public class RandomNumberController: ControllerBase
 {
     private readonly ILogger<RandomNumberController> _logger;
-    private readonly GolangService _golangService;
-    private readonly IRepository<RandomNumberRecord> _repository;
+    private readonly IGolangService _golangService;
+    private readonly INumbersRepository _repository;
+    private readonly int _numberOfRecordsToReturn;
     
-    public RandomNumberController(ILogger<RandomNumberController> logger, GolangService golangService, IRepository<RandomNumberRecord> repository)
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new ()
+    {
+        WriteIndented = true,
+    };
+    
+    public RandomNumberController(
+        ILogger<RandomNumberController> logger, 
+        IGolangService golangService, 
+        INumbersRepository repository,
+        IOptions<RandomNumbersControllerConfig> options)
     {
         _logger = logger;
         _golangService = golangService;
         _repository = repository;
+        _numberOfRecordsToReturn = options.Value.RecordsToReturn;
     }
     
     [HttpGet(Name = "GetRandomNumber")]
-    public async Task<string> Get()
+    public async Task<IActionResult> Get()
     {
         var request = new GetRandomNumberRequestDto()
         {
@@ -31,17 +49,17 @@ public class RandomNumberController: ControllerBase
         };
         
         var resp = await _golangService.GetRandomNumber(request);
-        
-        var record = new RandomNumberRecord()
-        {
-            Id = Guid.NewGuid(),
-            Number = resp.Number,
-            CreatedAt = DateTime.UtcNow,
-        };
+        var record = RandomNumberRecord.Create(resp.Number);
         
         await _repository.AddAsync(record);
-        var records = await _repository.ListAsync(take: 2);
+        var records = await _repository.ListAsync(take: _numberOfRecordsToReturn);
+
+        var response = new RandomNumberResponseDto()
+        {
+            Number = record.Number,
+            Records = records.Select(r => new Record(r.Id, r.Number, r.CreatedAt)).ToList(),
+        };  
         
-        return records.Select(r => r.Number).Aggregate("", (acc, n) => acc + n + " ");
+        return Ok(JsonSerializer.Serialize(response, _jsonSerializerOptions));
     }
 }
