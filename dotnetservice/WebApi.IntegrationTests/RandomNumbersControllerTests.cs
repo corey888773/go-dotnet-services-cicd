@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using WebApi.Apis.GolangServiceApi;
 using WebApi.Configuration;
 using WebApi.Controllers;
@@ -51,5 +52,14 @@ public class RandomNumbersControllerTests : BaseIntegrationTest
         
         responseDto?.Records.Should().NotBeNull();
         responseDto?.Records.Count.Should().BeLessThanOrEqualTo(_numberOfRecordsToReturn);
+    }
+    
+    [Fact]
+    public void GetRandomNumber_GolangServiceInactive_ResponseShouldBeInvalid()
+    {
+        _golangServiceMock.GetRandomNumber(Arg.Any<GetRandomNumberRequestDto>())
+            .Throws(new Exception("Response is null"));
+        
+        Assert.ThrowsAsync<Exception>(() => _controllerSut.Get());
     }
 }
