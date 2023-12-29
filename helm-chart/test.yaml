@@ -1,0 +1,154 @@
+---
+# Source: elympics/templates/postgres-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: release-name-elympics-postgres-secret
+  namespace: elympics
+type: Opaque
+data:
+  username: "cm9vdA=="
+  password: "c2VjcmV0"
+  connection-string: "Host=release-name-elympics-postgres-service;Port=5432;Database=elympics;User Id=root;Password=secret;"
+---
+# Source: elympics/templates/dotnet-api.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-elympics-dotnet-api-service
+  namespace: elympics
+spec:
+  selector:
+    app: release-name-elympics-dotnet-api
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8001
+    targetPort: 8001
+    nodePort: 30001
+---
+# Source: elympics/templates/golang-api.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-elympics-golang-api-service
+  namespace: elympics
+spec:
+  selector:
+    app: release-name-elympics-golang-api
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP
+---
+# Source: elympics/templates/postgres.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-elympics-postgres-service
+  namespace: elympics
+  labels:
+    app: release-name-elympics-postgres
+spec:
+    selector:
+        app: release-name-elympics-postgres
+    ports:
+        - protocol: TCP
+          port: 5432
+          targetPort: 5432
+    type: ClusterIP
+---
+# Source: elympics/templates/dotnet-api.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-elympics-dotnet-api
+  namespace: elympics
+spec:
+  replicas: 
+  selector:
+    matchLabels:
+      app:  release-name-elympics-dotnet-api
+  template:
+    metadata:
+      labels:
+        app:  release-name-elympics-dotnet-api
+    spec:
+      containers:
+      - name:  release-name-elympics-dotnet-api
+        image: corey773/elympics-dotnet:latest
+        ports:
+        - containerPort: 8001
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: ASPNETCORE_URLS
+          value: http://*:8001
+        - name: GolangServiceConfig__Url
+          value: http://release-name-elympics-golang-api-service:8000
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: release-name-elympics-postgres-secret
+              key: connection-string
+---
+# Source: elympics/templates/golang-api.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-elympics-golang-api
+  namespace: elympics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: release-name-elympics-golang-api
+  template:
+    metadata:
+      labels:
+        app: release-name-elympics-golang-api
+    spec:
+      containers:
+      - name: release-name-elympics-golang-api
+        image: corey773/elympics-golang:latest
+        ports:
+        - containerPort: 8000
+---
+# Source: elympics/templates/postgres.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-elympics-postgres
+  namespace: elympics
+  labels:
+    app: release-name-elympics-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: release-name-elympics-postgres        
+  template:
+    metadata:
+      labels:
+        app: release-name-elympics-postgres
+    spec:
+        containers:
+        - name: release-name-elympics-postgres
+          image: postgres:latest
+          env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                  name: release-name-elympics-postgres-secret
+                  key: password
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                  name: release-name-elympics-postgres-secret
+                  key: username
+          - name: POSTGRES_DB
+            value: elympics
+          ports:
+              - containerPort:  5432
+        restartPolicy: Always

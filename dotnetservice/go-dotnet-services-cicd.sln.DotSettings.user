@@ -1,6 +1,13 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8af9e58d_002D6f62_002D4916_002Da331_002D2a39ec467cbe/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RandomNumbersControllerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8af9e58d_002D6f62_002D4916_002Da331_002D2a39ec467cbe/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RandomNumbersControllerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::1C7194BD-C16B-4971-AEA3-2576DF3E5E63::net8.0::WebApi.IntegrationTests.RandomNumbersControllerTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1025028E-AF6E-4FEC-B79B-4DFB4211D003::net8.0::WebApi.AutomationTests.UnitTest1.Test1&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1025028E-AF6E-4FEC-B79B-4DFB4211D003::net8.0::WebApi.AutomationTests.UnitTest1.GET_RandomNumbers&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c5c57304_002D018d_002D4338_002Dbd30_002D7455af340397/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GET_RandomNumbers" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1025028E-AF6E-4FEC-B79B-4DFB4211D003::net8.0::WebApi.AutomationTests.UnitTest1.GET_RandomNumbers&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: elympics
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres        
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+        containers:
+        - name: postgres
+          image: postgres:latest
+          env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                  name: postgres-secret
+                  key: password
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                  name: postgres-secret
+                  key: username
+          - name: POSTGRES_DB
+            value: elympics
+          ports:
+              - containerPort:  5432
+        restartPolicy: Always        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: elympics
+  labels:
+    app: postgres
+spec:
+    selector:
+        app: postgres
+    ports:
+        - protocol: TCP
+          port: 5432
+          targetPort: 5432
+    type: ClusterIP
+    
