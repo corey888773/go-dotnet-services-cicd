@@ -1,0 +1,21 @@
+postgres:
+  image: postgres:latest
+  port: 5432
+  targetPort: 5432
+  replicaCount: 1
+  username: root
+  password: secret
+  dbName: elympics
+
+golangApi:
+  image: corey773/elympics-golang:latest
+  port: 8000
+  targetPort: 8000
+  replicaCount: 1
+
+dotnetApi:
+  env:
+    environment: Development
+  port: 8001
+  targetPort: 8001
+  nodePort: 30001

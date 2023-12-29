@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-golang-api
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.golangApi.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "helm-chart.fullname" . }}-golang-api
+  template:
+    metadata:
+      labels:
+        app: {{ include "helm-chart.fullname" . }}-golang-api
+    spec:
+      containers:
+      - name: {{ include "helm-chart.fullname" . }}-golang-api
+        image: {{ .Values.golangApi.image }}
+        ports:
+        - containerPort: {{ .Values.golangApi.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-golang-api-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: {{ include "helm-chart.fullname" . }}-golang-api
+  ports:
+  - protocol: TCP
+    port: {{ .Values.golangApi.port }}
+    targetPort: {{ .Values.golangApi.targetPort}}
+  type: ClusterIP

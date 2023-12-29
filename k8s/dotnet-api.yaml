@@ -24,7 +24,7 @@ spec:
         - name: ASPNETCORE_URLS
           value: "http://*:8001"
         - name: GolangServiceConfig__Url
-          value: 'http://golang-api-service:8000'
+          value: "http://golang-api-service:8000"
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
             secretKeyRef:

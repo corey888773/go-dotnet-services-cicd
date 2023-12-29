@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-postgres
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include "helm-chart.fullname" . }}-postgres
+spec:
+  replicas: {{ .Values.postgres.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "helm-chart.fullname" . }}-postgres        
+  template:
+    metadata:
+      labels:
+        app: {{ include "helm-chart.fullname" . }}-postgres
+    spec:
+        containers:
+        - name: {{ include "helm-chart.fullname" . }}-postgres
+          image: {{ .Values.postgres.image }}
+          env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                  name: {{ include "helm-chart.fullname" . }}-postgres-secret
+                  key: password
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                  name: {{ include "helm-chart.fullname" . }}-postgres-secret
+                  key: username
+          - name: POSTGRES_DB
+            value: elympics
+          ports:
+              - containerPort:  5432
+        restartPolicy: Always        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-postgres-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include "helm-chart.fullname" . }}-postgres
+spec:
+    selector:
+        app: {{ include "helm-chart.fullname" . }}-postgres
+    ports:
+        - protocol: TCP
+          port: {{ .Values.postgres.port }}
+          targetPort: {{ .Values.postgres.targetPort}}
+    type: ClusterIP
+    

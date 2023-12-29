@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-dotnet-api
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.dotnetApi.replicaCount }}
+  selector:
+    matchLabels:
+      app:  {{ include "helm-chart.fullname" . }}-dotnet-api
+  template:
+    metadata:
+      labels:
+        app:  {{ include "helm-chart.fullname" . }}-dotnet-api
+    spec:
+      containers:
+      - name:  {{ include "helm-chart.fullname" . }}-dotnet-api
+        image: corey773/elympics-dotnet:latest
+        ports:
+        - containerPort: 8001
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: {{ .Values.dotnetApi.env.environment}}
+        - name: ASPNETCORE_URLS
+          value: http://*:{{.Values.dotnetApi.port}}
+        - name: GolangServiceConfig__Url
+          value: http://{{ include "helm-chart.fullname" . }}-golang-api-service:{{ .Values.golangApi.port}}
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "helm-chart.fullname" . }}-postgres-secret
+              key: connection-string
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-dotnet-api-service
+  namespace: elympics
+spec:
+  selector:
+    app: {{ include "helm-chart.fullname" . }}-dotnet-api
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: {{ .Values.dotnetApi.port }}
+    targetPort: {{ .Values.dotnetApi.targetPort}}
+    nodePort: {{ .Values.dotnetApi.nodePort}}
