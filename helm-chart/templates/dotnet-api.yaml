@@ -30,6 +30,8 @@ spec:
             secretKeyRef:
               name: {{ include "helm-chart.fullname" . }}-postgres-secret
               key: connection-string
+        - name: RandomNumbersControllerConfig__RecordsToReturn
+          value: {{ .Values.dotnetApi.env.recordsToReturn | quote }}
 
 ---
 apiVersion: v1

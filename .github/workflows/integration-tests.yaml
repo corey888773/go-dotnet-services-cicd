@@ -1,13 +1,11 @@
-name: run tests
+name: run integration tests, build images and push to docker hub
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ main ]
     
 jobs:
-  test:
+  integration-tests:
     runs-on: ubuntu-latest
     
     steps:
@@ -21,9 +19,36 @@ jobs:
       - name: test
         run: |
             cd dotnetservice
-            dotnet test
-      
-      
-      
+            dotnet test WebApi.IntegrationTests/WebApi.IntegrationTests.csproj
+  
+  build-and-push:
+    needs: integration-tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: login to docker hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: Build and push dotnet serivce
+        uses: docker/build-push-action@v5
+        with:
+          context: ./dotnetservice
+          dockerfile: Dockerfile
+          push: true
+          tags: corey773/elympics-dotnet:latest
+          
+      - name: Build and push golang serivce
+        uses: docker/build-push-action@v5
+        with:
+          context: ./goservice
+          dockerfile: Dockerfile
+          push: true
+          tags: corey773/elympics-golang:latest
+
       
       

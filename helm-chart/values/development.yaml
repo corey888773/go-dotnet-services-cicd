@@ -16,6 +16,7 @@ golangApi:
 dotnetApi:
   env:
     environment: Development
+    recordsToReturn: 3
   port: 8001
   targetPort: 8001
   nodePort: 30001
